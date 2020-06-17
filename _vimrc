@@ -106,6 +106,7 @@ if has("gui_running")
   highlight FoldColumn guibg=gray4 guifg=gray38
 
   set guioptions-=T
+  set guioptions-=t
 
   set guifont=Courier_New:h10:cANSI
 
