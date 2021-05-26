@@ -11,7 +11,12 @@ filetype plugin indent on
 
 set textwidth=80
 set formatoptions=croqj
-
+" Vim default is tcq
+" c Auto-wrap comments
+" r Automatically insert the current comment leader after <Enter>
+" o Automatically insert the current comment leader after o/O
+" q Allow formatting of comments with gq
+" j Remove comment leader with joining lines
 
 " Setup spaces for indenting
 set expandtab shiftwidth=2 shiftround tabstop=2
@@ -30,7 +35,6 @@ set matchpairs+=<:>
 set foldmethod=syntax
 set foldcolumn=2
 
-
 set ruler
 set statusline=%<%f\ [%n]%h%w%m%r%=%-14.(%l,%c%V%)\ %P
 
@@ -40,8 +44,6 @@ autocmd FocusGained,BufEnter * checktime
 " Map the <Space> key to toggle a selected fold opened/closed.
 nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
 vnoremap <Space> zf
-
-
 
 " Create directory for backup files
 if !isdirectory($HOME . "\\.vimfiles")
@@ -54,7 +56,7 @@ set backup writebackup backupdir=$HOME\\.vimfiles
 set undodir=$HOME\\.vimfiles
 set viewdir=$HOME\\.vimfiles
 
-" Toggle paste mode with F2
+" Toggle linw numvwea with F2
 nnoremap <F2> :set invnumber number?<CR>
 imap <F2> <C-O>:set invnumber number?<CR>
 
@@ -63,7 +65,7 @@ nnoremap <F3> :set invpaste paste?<CR>
 imap <F3> <C-O>:set invpaste paste?<CR>
 "set pastetoggle=<F3>
 
-" Toggle paste mode with F4
+" Toggle spell check with F4
 nnoremap <F4> :set invspell spell?<CR>
 imap <F4> <C-O>:set invspell spell?<CR>
 
@@ -81,7 +83,6 @@ let g:netrw_liststyle=3
 " Shortcuts for accesing Explorer
 nnoremap - :Explore<CR>
 nnoremap _ :Vexplore!<CR>
-
 
 if has("clipboard")
   " CTRL-C and CTRL-Insert are Copy
@@ -117,4 +118,3 @@ if has("gui_running")
   autocmd BufWinLeave *.* mkview
   autocmd BufWinEnter *.* silent loadview
 endif
-
