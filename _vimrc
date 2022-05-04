@@ -118,3 +118,7 @@ if has("gui_running")
   autocmd BufWinLeave *.* mkview
   autocmd BufWinEnter *.* silent loadview
 endif
+
+autocmd FileType markdown setlocal comments=n:*,n:-,n:+,n:> formatoptions=qlnr
+
+command PPJson %!python -m json.tool
