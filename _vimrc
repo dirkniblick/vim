@@ -56,14 +56,13 @@ set backup writebackup backupdir=$HOME\\.vimfiles
 set undodir=$HOME\\.vimfiles
 set viewdir=$HOME\\.vimfiles
 
-" Toggle linw numvwea with F2
+" Toggle line numbers with F2
 nnoremap <F2> :set invnumber number?<CR>
 imap <F2> <C-O>:set invnumber number?<CR>
 
 " Toggle paste mode with F3
 nnoremap <F3> :set invpaste paste?<CR>
 imap <F3> <C-O>:set invpaste paste?<CR>
-"set pastetoggle=<F3>
 
 " Toggle spell check with F4
 nnoremap <F4> :set invspell spell?<CR>
@@ -75,6 +74,9 @@ inoremap <C-Space> <C-x><C-i>
 " Search visually selected text using // or ??
 vnoremap // y/<C-R>0<CR>
 vnoremap ?? y?<C-R>0<CR>
+
+" Adds removal of any search highlighting when redrawing the screen
+noremap <silent> <C-l> :nohl<CR><C-l>
 
 " Tweaking how the Explorer works
 let g:netrw_banner=0
@@ -119,6 +121,7 @@ if has("gui_running")
   autocmd BufWinEnter *.* silent loadview
 endif
 
+" Fix editing of bullets in Markdown
 autocmd FileType markdown setlocal comments=n:*,n:-,n:+,n:> formatoptions=qlnr
 
 command PPJson %!python -m json.tool
