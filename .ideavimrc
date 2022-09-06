@@ -40,3 +40,6 @@ sethandler <C-X> a:vim
 sethandler <C-Y> a:vim
 sethandler <C-[> a:vim
 sethandler <C-]> a:vim
+
+" Adds removal of any search highlighting when redrawing the screen
+noremap <silent> <C-l> :nohl<CR><C-l>
