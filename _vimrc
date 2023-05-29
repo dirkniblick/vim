@@ -86,12 +86,6 @@ let g:netrw_liststyle=3
 nnoremap - :Explore<CR>
 nnoremap _ :Vexplore!<CR>
 
-if has("clipboard")
-  " CTRL-C and CTRL-Insert are Copy
-  vnoremap <C-C> "+y
-  vnoremap <C-Insert> "+y
-endif
-
 if has("mouse")
   set mouse=a
 endif
@@ -113,12 +107,19 @@ if has("gui_running")
 
   set guifont=Courier_New:h10:cANSI
 
-  " Allow for copying from windows
-  vnoremap <C-C> "+y
-
   " Automatically save and load folds
   autocmd BufWinLeave *.* mkview
   autocmd BufWinEnter *.* silent loadview
+
+  if has("clipboard")
+    " Alt-C is copy
+    vnoremap <M-c> "+y
+    " Alt-V is paste
+    nnoremap <M-v> "+p
+    vnoremap <M-v> "+gP
+    cnoremap <M-v> <C-r>+
+    inoremap <M-v> <C-r>+
+  endif
 endif
 
 " Fix editing of bullets in Markdown
