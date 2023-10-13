@@ -101,6 +101,7 @@ if has("gui_running")
 
   highlight Folded guibg=gray4 guifg=gray38
   highlight FoldColumn guibg=gray4 guifg=gray38
+  highlight Cursor guibg=dimgray guifg=white
 
   set guioptions-=T
   set guioptions-=t
