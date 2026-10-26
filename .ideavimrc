@@ -1,4 +1,8 @@
 " VIM config for IntelliJ IDEA
+" 2026-10-26
+
+set idearefactormode=select
+set keymodel=""
 
 set expandtab shiftwidth=2 tabstop=2
 set hlsearch ignorecase incsearch smartcase
@@ -6,6 +10,7 @@ set hlsearch ignorecase incsearch smartcase
 set visualbell
 set scrolloff=3
 set laststatus=2
+set surround
 
 " Improved joining of lines
 " https://github.com/JetBrains/ideavim/wiki/%22ideajoin%22-examples
@@ -22,7 +27,7 @@ sethandler <C-F> a:ide
 sethandler <C-G> a:vim
 sethandler <C-H> a:vim
 sethandler <C-I> a:vim
-sethandler <C-J> a:vim
+sethandler <C-J> a:ide
 sethandler <C-K> a:ide
 sethandler <C-L> a:vim
 sethandler <C-M> a:vim
