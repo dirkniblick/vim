@@ -1,3 +1,6 @@
+" Jake's VIM Config
+" 2026-10-25
+
 set nocompatible
 
 " Helps force plug-ins to load correctly when it is turned back on below.
@@ -10,13 +13,14 @@ syntax on
 filetype plugin indent on
 
 set textwidth=80
-set formatoptions=croqj
-" Vim default is tcq
+set formatoptions=cjoqr
+" Vim default for formatoptions is tcq
 " c Auto-wrap comments
-" r Automatically insert the current comment leader after <Enter>
+" j Remove comment leader with joining lines
 " o Automatically insert the current comment leader after o/O
 " q Allow formatting of comments with gq
-" j Remove comment leader with joining lines
+" r Automatically insert the current comment leader after <Enter>
+" t Auto-wrap text using textwidth
 
 " Setup spaces for indenting
 set expandtab shiftwidth=2 shiftround tabstop=2
@@ -36,7 +40,19 @@ set foldmethod=syntax
 set foldcolumn=2
 
 set ruler
-set statusline=%<%f\ [%n]%h%w%m%r%=%-14.(%l,%c%V%)\ %P
+set statusline=%n%(\ %M%)\ %(%h%w\ %)%<%f%=\ %y%r\ \ %-5.(%l/%L,%c%V%)\ \ %P
+" n Buffer number
+" M Modified flag: ,+ or ,-
+" h Help buffer flag: [Help]
+" w Preview window flag: [Preview]
+" f Path to the file in the buffer
+" Y Type of file in the buffer
+" R Readonly flag: ,RO
+" l Line number
+" L Number of lines in buffer
+" c Column number
+" V Virtual column number: -{num}
+" P Percentage through file of displayed window
 
 set autoread
 autocmd FocusGained,BufEnter * checktime
@@ -56,26 +72,53 @@ set backup writebackup backupdir=$HOME\\.vimfiles
 set undodir=$HOME\\.vimfiles
 set viewdir=$HOME\\.vimfiles
 
-" Toggle line numbers with F2
+" F2 - Toggle line numbers
 nnoremap <F2> :set invnumber number?<CR>
+xnoremap <F2> <C-O>:set invnumber number?<CR>
 imap <F2> <C-O>:set invnumber number?<CR>
 
-" Toggle paste mode with F3
+" F3 - Toggle paste mode
 nnoremap <F3> :set invpaste paste?<CR>
 imap <F3> <C-O>:set invpaste paste?<CR>
 
-" Toggle spell check with F4
+" F4 - Toggle spell check
 nnoremap <F4> :set invspell spell?<CR>
+xnoremap <F4> <C-O>:set invspell spell?<CR>
 imap <F4> <C-O>:set invspell spell?<CR>
 
-" Ctrl Space for auto complete
-inoremap <C-Space> <C-x><C-i>
+" F5 - Toggle vertical line motion between regular and display
+let g:display_motion_enabled = 0
+function! DisplayMotionToggle()
+  let g:display_motion_enabled = !g:display_motion_enabled
+  if g:display_motion_enabled
+    echo "Motion: Display"
+  else
+    echo "Motion: Standard"
+  endif
+endfunction
+nnoremap <silent> <F5> :call DisplayMotionToggle()<CR>
+xnoremap <silent> <F5> :<C-u>call DisplayMotionToggle()<CR>
 
-" Search visually selected text using // or ??
+nnoremap <expr> j (g:display_motion_enabled ? 'gj' : 'j')
+xnoremap <expr> j (g:display_motion_enabled ? 'gj' : 'j')
+nnoremap <expr> k (g:display_motion_enabled ? 'gk' : 'k')
+xnoremap <expr> k (g:display_motion_enabled ? 'gk' : 'k')
+nnoremap <expr> gj (g:display_motion_enabled ? 'j' : 'gj')
+xnoremap <expr> gj (g:display_motion_enabled ? 'j' : 'gj')
+nnoremap <expr> gk (g:display_motion_enabled ? 'k' : 'gk')
+xnoremap <expr> gk (g:display_motion_enabled ? 'k' : 'gk')
+
+" Ctrl-Backspace - delete word
+noremap! <C-BS> <C-W>
+
+" Ctrl-Space - for auto complete
+inoremap <C-Space> <C-X><C-I>
+
+" // or ?? - Search visually selected text
 vnoremap // y/<C-R>0<CR>
 vnoremap ?? y?<C-R>0<CR>
 
-" Adds removal of any search highlighting when redrawing the screen
+" Ctrl-L - Adds removal of any search highlighting when redrawing the screen
 noremap <silent> <C-l> :nohl<CR><C-l>
 
 " Tweaking how the Explorer works
@@ -91,7 +134,7 @@ if has("mouse")
 endif
 
 " Additional configs for Windows
-if has("gui_running")
+if has("gui_running") || has("win32") || has("win64")
   try
     set t_Co=256
     colorscheme moonlight
@@ -112,18 +155,33 @@ if has("gui_running")
   autocmd BufWinLeave *.* mkview
   autocmd BufWinEnter *.* silent loadview
 
+  " Tweak clipboard shortcuts
   if has("clipboard")
+    " Alt-X is cut
+    vnoremap <M-x> "+x
     " Alt-C is copy
     vnoremap <M-c> "+y
     " Alt-V is paste
     nnoremap <M-v> "+p
     vnoremap <M-v> "+gP
-    cnoremap <M-v> <C-r>+
-    inoremap <M-v> <C-r>+
+    cnoremap <M-v> <C-R>+
+    inoremap <M-v> <C-R>+
   endif
 endif
 
-" Fix editing of bullets in Markdown
-autocmd FileType markdown setlocal comments=n:*,n:-,n:+,n:> formatoptions=qlnr
+" Alt-Shift-Left, Alt-Shift-Right - Shifting indents
+nnoremap <M-S-Left> <<
+inoremap <M-S-Left> <C-D>
+vnoremap <M-S-Left> <gv
+nnoremap <M-S-Right> >>
+inoremap <M-S-Right> <C-T>
+vnoremap <M-S-Right> >gv
 
-command PPJson %!python -m json.tool
+" Customization for Markdown files
+autocmd FileType markdown setlocal comments=n:*,n:-,n:+,n:> formatoptions=lnqr shiftwidth=4 tabstop=4
+
+" Add python-capable tools
+if executable('python')
+  " PPJson (command) - Reformat the text as pretty JSON
+  command PPJson %!python -m json.tool
+endif
